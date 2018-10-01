@@ -139,8 +139,6 @@ string prefix(string str)
 
     // Find the postfix string for this reverse string
     p = postfix(p);
-    // Print the result after turning the postfix string
-    cout << "Step 2: " << p << endl;
 
     // Finally, reverse this string again
     reverse(p.begin(), p.end());
