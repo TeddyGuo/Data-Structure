@@ -5,6 +5,7 @@
 
 using namespace std;
 
+int priority();
 string postfix(string);
 string prefix(string);
 

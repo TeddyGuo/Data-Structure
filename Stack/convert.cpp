@@ -3,12 +3,18 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
-#include <map>
 #include <iostream>
 #include <vector>
 #include <iomanip>
 
 using namespace std;
+
+int priority(char op)
+{
+    if (op == '+' || op == '-') return 1;
+    else if (op == '*' || op == '/' || op == '%') return 2;
+    else return 0;
+}
 
 string postfix(string str)
 {
@@ -16,13 +22,6 @@ string postfix(string str)
     Stack* stack = new Stack();
     // Declare a string for postfix
     string p = "";
-    // Declare a map for checking out each operator's score
-    map<string, int> score;
-    score["+"] = 5;
-    score["-"] = 5;
-    score["*"] = 6;
-    score["/"] = 6;
-    score["%"] = 6;
     // Declare three vectors to revcord some info
     vector<string> infixScanned;
     vector<string> stackList;
@@ -63,7 +62,7 @@ string postfix(string str)
        else if (isdigit(str[i]) || isalpha(str[i]) ) p += str[i];
        else if (str[i] == ')')
        {
-           while (stack->top() != "(")
+           while (stack->top() != '(')
            {
                p += stack->pop();
            }
@@ -73,8 +72,8 @@ string postfix(string str)
        {
            strng = "";
            strng += str[i];
-           int temp = score[strng];
-           while (score[stack->top()] >= temp)
+           
+           while (priority(stack->top() ) >= priority(str[i]) )
            {
                p += stack->pop();
            }

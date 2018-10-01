@@ -5,7 +5,7 @@ using namespace std;
 
 Stack::Stack()
 {
-    s = new string[30];
+    s = new string[40];
     t = NULL;
     index = -1;
 }
@@ -30,9 +30,9 @@ string Stack::pop()
     return str;
 }
 
-string Stack::top()
+char Stack::top()
 {
-    return *t;
+    return *t->c_str();
 }
 
 bool Stack::isEmpty()

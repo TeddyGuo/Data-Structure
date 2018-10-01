@@ -13,12 +13,12 @@ int main()
     {
         cout << endl;
 
-        cout << "Postfix Convertion:" << endl;
-        postfix(str);
-        cout << endl;
-
         cout << "Prefix Convertion:" << endl;
         prefix(str);
+        cout << endl;
+
+        cout << "Postfix Convertion:" << endl;
+        postfix(str);
         cout << endl;
 
         cout << "Please input the infix operation: ";

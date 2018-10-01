@@ -16,7 +16,7 @@ public:
     void push(char);
     void push(string);
     string pop();
-    string top();
+    char top();
     bool isEmpty();
     string print();
     ~Stack();
