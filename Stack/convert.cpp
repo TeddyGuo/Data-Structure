@@ -134,12 +134,18 @@ string prefix(string str)
 
     // Reverse all the string
     reverse(p.begin(), p.end());
+    // Print the result after reversing firstly
+    cout << "Step 1: " << p << endl;
 
     // Find the postfix string for this reverse string
     p = postfix(p);
+    // Print the result after turning the postfix string
+    cout << "Step 2: " << p << endl;
 
     // Finally, reverse this string again
     reverse(p.begin(), p.end());
+    // Print the result after reversing lastly
+    cout << "Step 3: " << p << endl;
 
     return p;
 }
