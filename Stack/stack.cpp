@@ -35,6 +35,11 @@ char Stack::top()
     return *t->c_str();
 }
 
+string Stack::str_top()
+{
+    return *t;
+}
+
 bool Stack::isEmpty()
 {
     return index == -1 ? true : false;

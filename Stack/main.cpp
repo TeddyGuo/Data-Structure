@@ -6,6 +6,7 @@ using namespace std;
 
 int main()
 {
+    string post = "", pre = "";
     string str = "";
     // test for convert
     cout << "Please input the infix operation: ";
@@ -14,11 +15,15 @@ int main()
         cout << endl;
 
         cout << "Prefix Convertion:" << endl;
-        prefix(str);
+        pre = postToPrefix(str);
+        cout << endl;
+        cout << "The prefix version of the infix: " << pre << endl;
         cout << endl;
 
         cout << "Postfix Convertion:" << endl;
-        postfix(str);
+        post = postfix(str);
+        cout << endl;
+        cout << "The postfix version of the infix: " << post << endl;
         cout << endl;
 
         cout << "Please input the infix operation: ";

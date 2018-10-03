@@ -17,6 +17,7 @@ public:
     void push(string);
     string pop();
     char top();
+    string str_top();
     bool isEmpty();
     string print();
     ~Stack();

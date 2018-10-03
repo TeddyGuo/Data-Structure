@@ -118,31 +118,47 @@ string postfix(string str)
     return p;
 }
 
-string prefix(string str)
+string postToPrefix(string str)
 {
-    // Declare a prefix string
-    string p = "";
+    cout << "Step 1: Convert the infix to postfix" << endl;
+    str = postfix(str);
 
-    // Replace "(" to ")" and ")" to "("
+    // Declare a Stack
+    Stack *stack = new Stack();
+    // Declare two vectors to revcord some info
+    vector<string> infixScanned;
+    vector<string> stackList;
+    
+    cout << "Next, convert the postfix to the prefix" << endl;
     for (int i = 0; i < str.size(); i++)
     {
-        if (str[i] == '(') p += ')';
-        else if (str[i] == ')') p += '(';
-        else p += str[i];
+        if (str[i] == '+' || str[i] == '-' || str[i] == '*' || str[i] == '/' || str[i] == '%')
+        {
+            // Pop two operands from the stack
+            string op1 = stack->pop();
+            string op2 = stack->pop();
+
+            // Concatenate operands and operator
+            string temp = str[i] + op2 + op1;
+
+            // Push temp string into the stack
+            stack->push(temp);
+        }
+        else
+            stack->push(string(1, str[i]) );
+
+        infixScanned.push_back(string(1, str[i]) );
+        stackList.push_back(stack->print());
     }
 
-    // Reverse all the string
-    reverse(p.begin(), p.end());
-    // Print the result after reversing firstly
-    cout << "Step 1: " << p << endl;
+    // Print all the info
+   cout << setw(10) << "Infix Scanned" << setw(10) << "|"
+        << setw(20) << "Stack" << setw(5) << endl;
+   for (int i = 0; i < infixScanned.size(); i++)
+   {
+       cout << setw(10) << infixScanned[i] << setw(10)
+            << setw(30) << stackList[i] << setw(5) << endl;
+   }
 
-    // Find the postfix string for this reverse string
-    p = postfix(p);
-
-    // Finally, reverse this string again
-    reverse(p.begin(), p.end());
-    // Print the result after reversing lastly
-    cout << "Step 3: " << p << endl;
-
-    return p;
+    return stack->str_top();
 }
