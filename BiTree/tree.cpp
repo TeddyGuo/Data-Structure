@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "tree.h"
 #include <iostream>
-#include <string.h>
+#include <cstddef>
 using namespace std;
 
 Node* search(Node* tree, int val)
@@ -20,13 +20,12 @@ Node* search(Node* tree, int val)
     }
 }
 void insert(Node* tree, int val)
-{
+{ 
     if (tree == NULL)
     {
         tree = (Node*) malloc(sizeof(Node));
         tree->val = val;
-        tree->left = NULL;
-        tree->right = NULL;
+        tree->left = tree->right = NULL;
     }
     else
     {
@@ -35,13 +34,12 @@ void insert(Node* tree, int val)
         else
             insert(tree->right, val);
     }
-    return;
 }
 void del(Node* tree, int val)
 {
     if (tree == NULL)
     {
-        printf("VAL not found in the tree. jjininder, suck my dick\n");
+        printf("VAL not found in the tree.\n");
     }
     else if (val < tree->val)
     {
@@ -56,6 +54,8 @@ void del(Node* tree, int val)
         Node* temp = findLargestNode(tree->left);
         tree->val = temp->val;
         del(tree->left, temp->val);
+
+        free(temp);
     }
     else
     {
