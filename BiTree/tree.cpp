@@ -1,8 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "tree.h"
+#include <iostream>
+#include <string.h>
+using namespace std;
 
-Node* search(struct Node* tree, int val)
+Node* search(Node* tree, int val)
 {
     if (tree->val == val || tree == NULL)
     {
@@ -20,7 +23,7 @@ void insert(Node* tree, int val)
 {
     if (tree == NULL)
     {
-        tree = malloc(sizeof(Node));
+        tree = (Node*) malloc(sizeof(Node));
         tree->val = val;
         tree->left = NULL;
         tree->right = NULL;
