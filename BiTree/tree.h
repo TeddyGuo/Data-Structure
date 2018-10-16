@@ -1,20 +1,21 @@
 #ifndef TREE_H
 #define TREE_H
 
-struct Node
+// NS: Node Structure
+typedef struct Node
 {
     int val;
-    Node* left;
-    Node* right;
-};
+    struct Node* left;
+    struct Node* right;
+}NS;
 
-Node* search(Node*, int);
-void insert(Node*, int);
-void del(Node*, int);
-Node* findLargestNode(Node*);
-int height(Node*);
-int totalNodes(Node*);
-int totalExternalNodes(Node*);
-void mirrorImage(Node*);
+struct Node* search(struct Node*, int);
+struct Node* insert(struct Node*, int);
+NS* del(struct Node*, int);
+struct Node* findLargestNode(struct Node*);
+int height(struct Node*);
+int totalNodes(struct Node*);
+int totalExternalNodes(struct Node*);
+NS* mirrorImage(struct Node*);
 
 #endif

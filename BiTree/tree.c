@@ -1,11 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "tree.h"
-#include <iostream>
-#include <cstddef>
-using namespace std;
+#include <stddef.h>
 
-Node* search(Node* tree, int val)
+struct Node* search(struct Node* tree, int val)
 {
     if (tree->val == val || tree == NULL)
     {
@@ -19,23 +17,25 @@ Node* search(Node* tree, int val)
             return search(tree->right, val);
     }
 }
-void insert(Node* tree, int val)
+struct Node* insert(struct Node* tree, int val)
 { 
     if (tree == NULL)
     {
-        tree = (Node*) malloc(sizeof(Node));
-        tree->val = val;
-        tree->left = tree->right = NULL;
+        struct Node* temp = (struct Node*) malloc(sizeof(struct Node));
+        temp->val = val;
+        temp->left = temp->right = NULL;
+        return temp;
     }
     else
     {
         if (val < tree->val)
-            insert(tree->left, val);
+            tree->left = insert(tree->left, val);
         else
-            insert(tree->right, val);
+            tree->right = insert(tree->right, val);
     }
+    return tree;
 }
-void del(Node* tree, int val)
+NS* del(struct Node* tree, int val)
 {
     if (tree == NULL)
     {
@@ -43,23 +43,22 @@ void del(Node* tree, int val)
     }
     else if (val < tree->val)
     {
-        del(tree->left, val);
+        tree->left = del(tree->left, val);
     }
     else if (val > tree->val)
     {
-        del(tree->right, val);
+        tree->right = del(tree->right, val);
     }
     else if (tree->left != NULL && tree->right != NULL)
     {
-        Node* temp = findLargestNode(tree->left);
+        struct Node* temp = findLargestNode(tree->left);
         tree->val = temp->val;
-        del(tree->left, temp->val);
+        tree->left = del(tree->left, temp->val);
 
         free(temp);
     }
     else
     {
-        Node* temp = tree;
         if (tree->left == NULL && tree->right == NULL)
         {
             tree = NULL;
@@ -68,13 +67,13 @@ void del(Node* tree, int val)
             tree = tree->left;
         else
             tree = tree->right;
-
-        free(temp);
     }
+
+    return tree;
 }
-Node* findLargestNode(Node* node)
+struct Node* findLargestNode(struct Node* node)
 {
-    Node* max = node;
+    struct Node* max = node;
     while (node != NULL)
     {
         if (max->val < node->val)
@@ -86,7 +85,7 @@ Node* findLargestNode(Node* node)
     return max;
 }
 
-int height(Node* tree)
+int height(struct Node* tree)
 {
     if (tree == NULL) return 0;
     else
@@ -104,14 +103,14 @@ int height(Node* tree)
         }
     }
 }
-int totalNodes(Node* tree)
+int totalNodes(struct Node* tree)
 {
     if (tree == NULL)
         return 0;
     else
         return totalNodes(tree->left) + totalNodes(tree->right) + 1;
 }
-int totalExternalNodes(Node* tree)
+int totalExternalNodes(struct Node* tree)
 {
     if (tree == NULL)
         return 0;
@@ -125,16 +124,18 @@ int totalExternalNodes(Node* tree)
     }
 }
 
-void mirrorImage(Node* tree)
+NS* mirrorImage(struct Node* tree)
 {
     if (tree != NULL)
     {
-        mirrorImage(tree->left);
-        mirrorImage(tree->right);
-        Node* temp = tree->left;
+        tree->left = mirrorImage(tree->left);
+        tree->right = mirrorImage(tree->right);
+        struct Node* temp = tree->left;
         tree->left = tree->right;
         tree->right = temp;
     }
     else
         printf("The tree is empty\n");
+
+    return tree;
 }
