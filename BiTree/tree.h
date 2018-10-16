@@ -17,5 +17,6 @@ int height(struct Node*);
 int totalNodes(struct Node*);
 int totalExternalNodes(struct Node*);
 NS* mirrorImage(struct Node*);
+NS* smallMirrorImage(NS*);
 
 #endif

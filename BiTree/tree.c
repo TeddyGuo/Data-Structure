@@ -128,8 +128,8 @@ NS* mirrorImage(struct Node* tree)
 {
     if (tree != NULL)
     {
-        tree->left = mirrorImage(tree->left);
-        tree->right = mirrorImage(tree->right);
+        tree->left = smallMirrorImage(tree->left);
+        tree->right = smallMirrorImage(tree->right);
         struct Node* temp = tree->left;
         tree->left = tree->right;
         tree->right = temp;
@@ -138,4 +138,18 @@ NS* mirrorImage(struct Node* tree)
         printf("The tree is empty\n");
 
     return tree;
+}
+
+NS* smallMirrorImage(NS* node)
+{
+    if (node != NULL)
+    {
+        node->left = smallMirrorImage(node->left);
+        node->right = smallMirrorImage(node->right);
+        struct Node* temp = node->left;
+        node->left = node->right;
+        node->right = temp;
+    }
+
+    return node;
 }

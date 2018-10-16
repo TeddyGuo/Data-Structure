@@ -24,6 +24,8 @@ int main()
     printf("%d\n", b->right->val);
     b = insert(b, 32);
     b = insert(b, 64);
+    b = insert(b, 300);
+    printf("%d\n", b->right->left->val);
 
     // del part
     // single one node
@@ -49,6 +51,8 @@ int main()
     // mirror image test
     b = mirrorImage(b);
     printf("%d %d %d\n", b->val, b->right->val, b->left->val);
+    NS* c;
+    c = mirrorImage(c);
 
     return 0;
 }
