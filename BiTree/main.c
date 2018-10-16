@@ -39,7 +39,16 @@ int main()
     b = del(b, 123);
     printf("%d\n", b->val);
 
-    
+    // height test
+    printf("%d\n", height(b));
+    // totoalNodes test
+    printf("%d\n", totalNodes(b));
+    // totalExternalNodes test
+    printf("%d\n", totalExternalNodes(b));
+
+    // mirror image test
+    b = mirrorImage(b);
+    printf("%d %d %d\n", b->val, b->right->val, b->left->val);
 
     return 0;
 }
