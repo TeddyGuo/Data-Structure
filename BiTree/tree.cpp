@@ -2,6 +2,37 @@
 #include <stdio.h>
 #include "tree.h"
 #include <stddef.h>
+#include <vector>
+#include <iostream>
+using namespace std;
+
+void postorder(NS* tree, vector<int>& arr)
+{
+    if (tree != NULL)
+    {
+        postorder(tree->left, arr);
+        postorder(tree->right, arr);
+        arr.push_back(tree->val);
+    }
+}
+void preorder(NS* tree, vector<int>& arr)
+{
+    if (tree != NULL)
+    {
+        arr.push_back(tree->val);
+        preorder(tree->left, arr);
+        preorder(tree->right, arr);
+    }
+}
+void inorder(NS* tree, vector<int>& arr)
+{
+    if (tree != NULL)
+    {
+        inorder(tree->left, arr);
+        arr.push_back(tree->val);
+        inorder(tree->right, arr);
+    }
+}
 
 struct Node* search(struct Node* tree, int val)
 {
@@ -51,7 +82,7 @@ NS* del(struct Node* tree, int val)
     }
     else if (tree->left != NULL && tree->right != NULL)
     {
-        struct Node* temp = findLargestNode(tree->left);
+        NS* temp = findLargestNode(tree->left);
         tree->val = temp->val;
         tree->left = del(tree->left, temp->val);
 
@@ -60,29 +91,67 @@ NS* del(struct Node* tree, int val)
     else
     {
         if (tree->left == NULL && tree->right == NULL)
-        {
             tree = NULL;
-        }
-        else if (tree->left != NULL)
-            tree = tree->left;
-        else
+        else if (tree->left == NULL)
             tree = tree->right;
+        else
+            tree = tree->left;
+    }
+
+    return tree;
+}
+NS* delMin(NS* tree, int val)
+{
+    if (tree == NULL)
+    {
+        // printf("VAL not found in the tree.\n");
+    }
+    else if (val < tree->val)
+    {
+        tree->left = delMin(tree->left, val);
+    }
+    else if (val > tree->val)
+    {
+        tree->right = delMin(tree->right, val);
+    }
+    else
+    {
+        if (tree->left == NULL)
+        {
+            NS* temp = tree->right;
+            free(tree);
+            return temp;
+        }
+        else if (tree->right == NULL)
+        {
+            NS* temp = tree->left;
+            free(tree);
+            return temp;
+        }
+        else
+        {
+            NS* temp = findSmallestNode(tree->right);
+            // cout << "Smallest: " << temp->val << endl;
+            tree->val = temp->val;
+            tree->right = delMin(tree->right, temp->val);
+        }
     }
 
     return tree;
 }
 struct Node* findLargestNode(struct Node* node)
 {
-    struct Node* max = node;
-    while (node != NULL)
-    {
-        if (max->val < node->val)
-        {
-            max = node;
-        }
-        node = node->right;
-    }
-    return max;
+    NS* cur = node;
+    while (cur->right != NULL)
+        cur = cur->right;
+    return cur;
+}
+NS* findSmallestNode(NS* node)
+{
+    NS* cur = node;
+    while (cur->left != NULL)
+        cur = cur->left;
+    return cur;
 }
 
 int height(struct Node* tree)
@@ -121,6 +190,22 @@ int totalExternalNodes(struct Node* tree)
     else
     {
         return totalExternalNodes(tree->left) + totalExternalNodes(tree->right);  
+    }
+}
+int totalInternalNodes(NS* tree)
+{
+    if (tree == NULL || (tree->left == NULL && tree->right == NULL))
+    {
+        return 0;
+    }
+    else
+    {
+        if (tree->left != NULL && tree->right != NULL) 
+            return totalInternalNodes(tree->left) + totalInternalNodes(tree->right) + 1;
+        else if (tree->left != NULL)
+            return totalInternalNodes(tree->left) + 1;
+        else
+            return totalInternalNodes(tree->right) + 1;
     }
 }
 
