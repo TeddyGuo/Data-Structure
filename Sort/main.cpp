@@ -3,6 +3,7 @@
 #include "quickSort.h"
 #include "mergeSort.h"
 #include "radixSort.h"
+#include "insertionSort.h"
 using namespace std;
 
 int main()
@@ -13,6 +14,8 @@ int main()
     vector<int> arr;
 
     // quick sort part
+    // finish
+    cout << "Quick Sort:" << endl;
     cin >> size;
     while (i < size)
     {
@@ -25,7 +28,7 @@ int main()
     cout << endl;
 
     // merge sort part
-    // finish at this moment
+    // partial finish
     cout << "Merge Sort:" << endl;
     arr.clear();
     i = 0;
@@ -42,6 +45,7 @@ int main()
 
     cout << endl;
     // Radix Sort part
+    // finish
     cout << "Radix Sort:" << endl;
     arr.clear();
     cin >> size;
@@ -54,5 +58,20 @@ int main()
     }
     radixSort(arr, size);
     
+    cout << endl;
+    // insertion sort part
+    // finish
+    cout << "Insertion Sort:" << endl;
+    arr.clear();
+    i = 0;
+    cin >> size;
+    while (i < size)
+    {
+        cin >> temp;
+        arr.push_back(temp);
+        i++;
+    }
+    insertionSort(arr, size);
+
     return 0;
 }
