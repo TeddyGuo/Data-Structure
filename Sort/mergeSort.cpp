@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 #include "mergeSort.h"
 
 using namespace std;
@@ -12,45 +13,50 @@ void mergeSort(vector<int>& arr, int begin, int end)
         mergeSort(arr, begin, mid);
         mergeSort(arr, mid + 1, end);
         merge(arr, begin, mid, end);
+
+        // print out
+        for (int k = begin; k < end; k++)
+        {
+            cout << arr[k] << " ";
+        }
+        cout << arr[end] << endl;
+    }
+    else
+    {
+        // print out the single element
+        cout << arr[end] << endl;
     }
 }
 
 void merge(vector<int>& arr, int begin, int mid, int end)
 {
-    vector<int> L(arr.begin() + begin, arr.begin() + mid + 1);
-    vector<int> R(arr.begin() + mid + 1, arr.begin() + end + 1);
-    int i = 0, j = 0, index = begin;
+    int i = begin, j = mid + 1, index = 0;
+    int *temp = (int*)calloc(end - begin + 1, sizeof(int));
 
-    L.insert(L.end(), 1000); R.insert(R.end(), 1000);
-
-    while (index <= end)
+    while (i <= mid && j <= end)
     {
-        if (L[i] < R[j])
+        if (arr[i] < arr[j])
         {
-            arr[index] = L[i];
-            i++;
+            temp[index] = arr[i++];
         }
         else
         {
-            arr[index] = R[j];
-            j++;
+            temp[index] = arr[j++];
         }
         index++;
     }
+    while (i <= mid)
+    {
+        temp[index++] = arr[i++];
+    }
+    while (j <= end)
+    {
+        temp[index++] = arr[j++];
+    }
+    for (i = begin; i <= end; i++)
+    {
+        arr[i] = temp[i - begin];
+    }
 
-    // print out single element in L and R
-    if (L.size() == 2)
-    {
-        cout << L[0] << endl;
-    }
-    if (R.size() == 2)
-    {
-        cout << R[0] << endl;
-    }
-    // print out
-    for (int k = begin; k < end; k++)
-    {
-        cout << arr[k] << " ";
-    }
-    cout << arr[end] << endl;
+    free(temp);
 }

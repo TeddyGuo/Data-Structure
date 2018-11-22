@@ -28,7 +28,7 @@ int main()
     cout << endl;
 
     // merge sort part
-    // partial finish
+    // finish
     cout << "Merge Sort:" << endl;
     arr.clear();
     i = 0;
