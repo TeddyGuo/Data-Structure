@@ -47,6 +47,12 @@ public:
     string start;
     string end;
     int weight;
+    Edge()
+    {
+        start = "";
+        end = "";
+        weight = 0;
+    }
     Edge(string start, string end, int weight)
     {
         this->start = start;

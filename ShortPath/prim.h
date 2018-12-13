@@ -7,82 +7,67 @@
 #include <algorithm>
 using namespace std;
 
-void appendPath(vector<Edge> edgeList, vector<Edge>& tempList, string vertex)
+void delFromUnreach(vector<string>& unreach, string chosen)
 {
-    for (int i = 0; i < edgeList.size(); i++)
+    int index = -1;
+    for (int i = 0; i < unreach.size(); i++)
     {
-        if (edgeList[i].end == vertex || edgeList[i].start == vertex)
-            tempList.push_back(edgeList[i]);
+        if (unreach[i] == chosen)
+        {
+            index = i;
+            break;
+        }
     }
-    
+    if (index != -1)
+        unreach.erase(unreach.begin() + index);
 }
-bool has_one_in(vector<string> vertexList, Edge edge)
+bool in_N(set<string> N, string chosen)
 {
-    short start = 0, end = 0;
-    for (int i = 0; i < vertexList.size(); i++)
+    for (set<string>::iterator i = N.begin(); i != N.end(); i++)
     {
-        if (edge.start == vertexList[i])
-            start = 1;
-        if (edge.end == vertexList[i])
-            end = 1;
+        if (*i == chosen)
+            return 1;
     }
-    if ((start == 1 && end == 0) || (start == 0 && end == 1) )
-        return 1;
     return 0;
 }
-void delPath(vector<Edge> path, vector<string> vertexList, vector<Edge>& tempList)
+bool in_unreach(vector<string> unreach, string chosen)
 {
-    for (int i = 0; i < path.size(); i++)
+    for (int i = 0; i <unreach.size(); i++)
     {
-        for (int j = 0; j < tempList.size(); j++)
-        {
-            if (path[i].equal(tempList[j] ) )
-            {
-                tempList.erase(tempList.begin() + j);
-                j--;
-            }
-        }
+        if (unreach[i] == chosen)
+            return 1;
     }
-    for (int i = 0; i < tempList.size(); i++)
-    {
-        if (!has_one_in(vertexList, tempList[i] ) )
-        {
-            tempList.erase(tempList.begin() + i);
-            i--;
-        }
-    }
+    return 0;
 }
-void minPath(vector<Edge>& tempList)
+Edge findMinEdge(set<string> N, vector<string> unreach, vector<Edge> edgeList)
 {
-    int index = 0;
-    if (tempList.size() > 1)
-    {
-        for (int i = 1; i < tempList.size(); i++)
-        {
-            if (tempList[index].weight > tempList[i].weight )
-                index = i;
-        }
-        Edge edge(tempList[index]);
-        tempList.clear();
-        tempList.push_back(edge);
-    }
-}
-void appendVertex(vector<string>& vertexList, Edge edge)
-{
-    vertexList.push_back(edge.start);
-    vertexList.push_back(edge.end);
-    sort( vertexList.begin(), vertexList.end() );
-    vertexList.erase( unique( vertexList.begin(), vertexList.end() ), vertexList.end() );
+    vector<Edge> temp;
+    for (int i = 0; i < edgeList.size(); i++)
+        if ((in_N(N, edgeList[i].start) && in_unreach(unreach, edgeList[i].end) ) 
+            || (in_N(N, edgeList[i].end) && in_unreach(unreach, edgeList[i].start) ) )
+            temp.push_back(edgeList[i]);
+
+    // the edge containing smallest weight put at first place
+    for (int i = 0; i < temp.size(); i++)
+        for (int j = i + 1; j < temp.size(); j++)
+            if (temp[i].weight > temp[j].weight)
+                swap(temp[i], temp[j]);
+
+    // print(temp);
+    // cout << endl;
+    
+    return temp[0];
 }
 
 void prim()
 {
     int linenum;
     string start;
-    vector<string> vertexList;
-    vector<Edge> path;
     vector<Edge> edgeList;
-    set<string> vertexSet;
+    set<string> vertexSet; // unreachedSet
+    vector<string> unreach;
+    set<string> N; // reachSet
+    vector<Edge> MST; // spanning tree
 
     cin >> linenum;
     // the input
@@ -107,32 +92,32 @@ void prim()
     }
     // it means the end of the input
     cin >> start;
-
+    // important to del the first element of edgeList
+    edgeList.erase(edgeList.begin());
     // print(vertexSet);
-    
-    vertexList.push_back(start);
-    for (int i = 0; i < vertexSet.size() - 1; i++)
+    // print(edgeList);
+    // vertexSet turn into unreach in order to prevent some problems
+    for (set<string>::iterator it = vertexSet.begin(); it != vertexSet.end(); it++)
+        unreach.push_back(*it);
+    unreach.erase(unreach.begin() );
+    // print(unreach);
+
+    // set start point for N
+    N.insert(start);
+    delFromUnreach(unreach, start);
+
+    while (!unreach.empty())
     {
-        vector<Edge> tempList;
-        for (int j = 0; j < vertexList.size(); j++)
-        {
-            appendPath(edgeList, tempList, vertexList[j]);
-        }
+        Edge chosen = findMinEdge(N, unreach, edgeList);
 
-        delPath(path, vertexList, tempList);
+        MST.push_back(chosen);
 
-        minPath(tempList);
-
-        if (tempList.size() != 0)
-        {
-            path.push_back(tempList[0] );
-            appendVertex(vertexList, tempList[0]);
-        }
-        // print(path);
-        // cout << endl;
+        N.insert(chosen.start);
+        N.insert(chosen.end);
+        //del the elements
+        delFromUnreach(unreach, chosen.start);
+        delFromUnreach(unreach, chosen.end);
     }
-    
-    sortEdge(path);
-
-    print(path);
+    sortEdge(MST);
+    print(MST);
 }
