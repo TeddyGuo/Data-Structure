@@ -1,8 +1,10 @@
 #include "prim.h"
+#include "kruskal.h"
 
 int main()
 {
-    prim();
+    //prim();
+    kruskal();
 
     return 0;
 }
